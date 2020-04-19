@@ -21,4 +21,7 @@ public:
 private:
 
 	player_attributes* pAttributes;
+public:
+	int posX = 0;
+	int posY = 0;
 };
