@@ -1,12 +1,11 @@
 #include "TileMap.h"
 #include <iostream>
+#include "Utility.h"
 
 TileMap::TileMap()
-	:
-	rng(std::random_device()())
 {
-	std::uniform_int_distribution<int> locations(0, 1);
 
+	//Generate map borders
 	for (int y = 0; y < rows; ++y)
 	{
 		for (int x = 0; x < cols; ++x)
@@ -14,12 +13,31 @@ TileMap::TileMap()
 			map[y][x] = 4;
 		}
 	}
+	//Generate map contents
 	for (int y = 1; y < rows - 1; ++y)
 	{
 		for (int x = 1; x < cols - 1; ++x)
 		{
-			map[y][x] = locations(rng);
+			int location = GenerateRandomNumber(0, 0);
+			if (location == 1 && x % 4 == 0 && y % 4 == 0)
+			{
+				map[y][x] = location;
+			}
+			else
+			{
+				map[y][x] = location;
+			}
+			
 		}
+	}
+
+	//Generate enemies
+	for (int i = 0; i < 5; ++i)
+	{
+		pos.x = GenerateRandomNumber(1, cols - 2);
+		pos.y = GenerateRandomNumber(1, rows - 2);
+		enemy[i] = Enemy(pos);
+		map[pos.y][pos.x] = 5;
 	}
 }
 
@@ -50,6 +68,11 @@ void TileMap::PrintMap()
 				//Can't go there
 				std::cout << "X";
 			}
+			else if (map[y][x] == 5)
+			{
+				//Can't go there
+				std::cout << "E";
+			}
 			
 			//For debug purposes
 			//std::cout << map[y][x];
@@ -60,6 +83,7 @@ void TileMap::PrintMap()
 
 bool TileMap::isMoveValid(const Player& p)
 {
+	combat = false;
 	if (map[p.posY][p.posX] == 4)
 	{
 		std::cout << "You faced with huge rocky mountains that can't be walked around." << std::endl;
@@ -73,10 +97,37 @@ bool TileMap::isMoveValid(const Player& p)
 		std::cout << "in different direction. Well, at least you can move in other direction." << std::endl;
 		return false;
 	}
+	else if (map[p.posY][p.posX] == 5)
+	{
+		std::cout << GetEnemy(p)->GetAttributes()->name 
+			<< " saw you and approach to slit your throat!" << std::endl;
+		std::cout << "PREPARE FOR BATTLE!" << std::endl;
+		combat = true;
+		return true;
+	}
 	return true;
+}
+
+bool TileMap::IsCombat() const
+{
+	return combat;
 }
 
 void TileMap::SetMapMarker(const Player& p)
 {
 	map[p.posY][p.posX] = 3;
+}
+
+Enemy* TileMap::GetEnemy(const Player& p)
+{
+	//TODO(ivan): possibly there is a simpler way
+	int rightEnemyIndex = 0;
+	for (int i = 0; i < 5; ++i)
+	{
+		if (p.posX == enemy[i].GetEnemyPos().x && p.posY == enemy[i].GetEnemyPos().y)
+		{
+			rightEnemyIndex = i;
+		}
+	}
+	return &enemy[rightEnemyIndex];
 }

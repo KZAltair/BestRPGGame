@@ -1,8 +1,10 @@
+#include "Utility.h"
 #include "Game.h"
 
 Game::Game()
 {
 	//TODO(Ivan): Make random position based on obstacles
+	map = TileMap();
 
 }
 
@@ -22,10 +24,27 @@ void Game::Run()
 			player.posY = 1;
 			map.SetMapMarker(player);
 		}
-		
-		PrintGameMenu(player);
 
+		if (!player.IsAlive())
+		{
+			PrintGameOver();
+			IsGameRunning = false;
+		}
+		else
+		{
+			PrintGameMenu(player);
+		}
 	}
+}
+
+void Game::PrintGameOver()
+{
+	system("CLS");
+	std::cout << "**************************" << std::endl;
+	std::cout << "**       GAME OVER      **" << std::endl;
+	std::cout << "**************************" << std::endl;
+	system("pause");
+
 }
 
 void Game::PrintMenu()
@@ -98,7 +117,7 @@ void Game::ViewCharacterStats(const Player& player)
 void Game::PrintGameMenu(Player& player)
 {
 	unsigned char choice;
-	std::cout << "VIEW STATS(C)--TRAVEL(W)--MAP(M)--CLEAR SCREEN(C)--QUIT(Q)" << std::endl;
+	std::cout << "VIEW STATS(K)--TRAVEL(W)--MAP(M)--CLEAR SCREEN(C)--QUIT(Q)" << std::endl;
 	std::cin >> choice;
 
 	if (choice == 'Q' || choice == 'q')
@@ -120,7 +139,16 @@ void Game::PrintGameMenu(Player& player)
 			player.posX -= 1;
 			if (map.isMoveValid(player))
 			{
-				map.SetMapMarker(player);
+				
+				if (map.IsCombat())
+				{
+					Combat();
+					map.SetMapMarker(player);
+				}
+				else
+				{
+					map.SetMapMarker(player);
+				}
 			}
 			else
 			{
@@ -132,7 +160,16 @@ void Game::PrintGameMenu(Player& player)
 			player.posY -= 1;
 			if (map.isMoveValid(player))
 			{
-				map.SetMapMarker(player);
+
+				if (map.IsCombat())
+				{
+					Combat();
+					map.SetMapMarker(player);
+				}
+				else
+				{
+					map.SetMapMarker(player);
+				}
 			}
 			else
 			{
@@ -144,7 +181,16 @@ void Game::PrintGameMenu(Player& player)
 			player.posX += 1;
 			if (map.isMoveValid(player))
 			{
-				map.SetMapMarker(player);
+
+				if (map.IsCombat())
+				{
+					Combat();
+					map.SetMapMarker(player);
+				}
+				else
+				{
+					map.SetMapMarker(player);
+				}
 			}
 			else
 			{
@@ -156,7 +202,16 @@ void Game::PrintGameMenu(Player& player)
 			player.posY += 1;
 			if (map.isMoveValid(player))
 			{
-				map.SetMapMarker(player);
+
+				if (map.IsCombat())
+				{
+					Combat();
+					map.SetMapMarker(player);
+				}
+				else
+				{
+					map.SetMapMarker(player);
+				}
 			}
 			else
 			{
@@ -168,7 +223,7 @@ void Game::PrintGameMenu(Player& player)
 			std::cout << "Enter a valid command..." << std::endl;
 		}
 	}
-	else if (choice == 'C' || choice == 'c')
+	else if (choice == 'K' || choice == 'k')
 	{
 		ViewCharacterStats(player);
 	}
@@ -196,6 +251,9 @@ player_attributes Game::ConstructPlayerAttributes(unsigned int PlayerCharacter)
 		pAttr.mana = 50;
 		pAttr.speed = 20;
 		pAttr.strength = 8;
+		pAttr.manaSpellCost = 50;
+		pAttr.ArmorClass = 30;
+		pAttr.MagicResistance = 20;
 
 		return pAttr;
 	}break;
@@ -208,6 +266,9 @@ player_attributes Game::ConstructPlayerAttributes(unsigned int PlayerCharacter)
 		pAttr.mana = 100;
 		pAttr.speed = 10;
 		pAttr.strength = 5;
+		pAttr.manaSpellCost = 30;
+		pAttr.ArmorClass = 15;
+		pAttr.MagicResistance = 40;
 
 		return pAttr;
 
@@ -221,6 +282,9 @@ player_attributes Game::ConstructPlayerAttributes(unsigned int PlayerCharacter)
 		pAttr.mana = 70;
 		pAttr.speed = 30;
 		pAttr.strength = 6;
+		pAttr.manaSpellCost = 40;
+		pAttr.ArmorClass = 20;
+		pAttr.MagicResistance = 10;
 
 		return pAttr;
 
@@ -229,5 +293,63 @@ player_attributes Game::ConstructPlayerAttributes(unsigned int PlayerCharacter)
 	{
 		return pAttr = {};
 	}break;
+	}
+}
+
+void Game::Combat()
+{
+	while (player.IsAlive() && map.GetEnemy(player)->IsAlive())
+	{
+		int diceNumber = GenerateRandomNumber(1, 6);
+		char in = 0;
+		std::cout << "**************************************************" << std::endl;
+		std::cout << map.GetEnemy(player)->GetAttributes()->name << " "
+			<< map.GetEnemy(player)->GetAttributes()->health << std::endl;
+		std::cout << "**************************************************" << std::endl;
+		std::cout << "Attack(A)--Move(W)--Run(D)--SPEAK(S)" << std::endl;
+		std::cin >> in;
+		if (in == 'A' || in == 'a')
+		{
+			//Attack logic
+			char attackIn = 0;
+			std::cout << "ATTACK WITH WEAPON(A)--ATTACK WITH MAGIC(D)" << std::endl;
+			std::cin >> attackIn;
+			if (attackIn == 'A' || attackIn == 'a')
+			{
+				int enemyArmorClass = map.GetEnemy(player)->GetAttributes()->armorClass;
+				int enemyMagicResistance = map.GetEnemy(player)->GetAttributes()->magicResistance;
+				int damage = player.Attack(enemyArmorClass, enemyMagicResistance, 0);
+				map.GetEnemy(player)->TakeDamage(damage);
+				int enemyDamage = map.GetEnemy(player)->Attack(player.GetPlayerAttributes()->ArmorClass, 
+															player.GetPlayerAttributes()->MagicResistance);
+				player.TakeDamage(enemyDamage);
+			}
+			else if (attackIn == 'D' || attackIn == 'd')
+			{
+				int enemyArmorClass = map.GetEnemy(player)->GetAttributes()->armorClass;
+				int enemyMagicResistance = map.GetEnemy(player)->GetAttributes()->magicResistance;
+				int damage = player.Attack(enemyArmorClass, enemyMagicResistance, 1);
+				map.GetEnemy(player)->TakeDamage(damage);
+				int enemyDamage = map.GetEnemy(player)->Attack(player.GetPlayerAttributes()->ArmorClass,
+					player.GetPlayerAttributes()->MagicResistance);
+				player.TakeDamage(enemyDamage);
+			}
+		}
+		else if (in == 'W' || in == 'w')
+		{
+			//Move around enemy with speed modifiers
+		}
+		else if (in == 'D' || in == 'd')
+		{
+			//Dice to run or take free dagame from enemy
+		}
+		else if (in == 'S' || in == 's')
+		{
+			//Speak with enemy for fun outcomes
+		}
+		else
+		{
+			std::cout << "Enter a valid command!" << std::endl;
+		}
 	}
 }
