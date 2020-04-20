@@ -78,16 +78,16 @@ enemy_pos Enemy::GetEnemyPos() const
 
 void Enemy::TakeDamage(int damage)
 {
-		if (eAttributes.health <= 0)
-		{
-			std::cout << eAttributes.name <<" screams fall down to the ground bleeding" << std::endl;
-			std::cout << eAttributes.name <<" is dead." << std::endl;
-			isAlive = false;
-		}
-		else
+		if (isAlive)
 		{
 			eAttributes.health -= damage;
 			std::cout << eAttributes.name << " was hit by " << damage << " damage" << std::endl;
+			if (eAttributes.health < 0)
+			{
+				std::cout << eAttributes.name << " screams fall down to the ground bleeding" << std::endl;
+				std::cout << eAttributes.name << " is dead." << std::endl;
+				isAlive = false;
+			}
 		}
 }
 
