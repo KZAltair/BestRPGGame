@@ -1,15 +1,9 @@
 #include "Game.h"
 
 Game::Game()
-	:
-	rng(std::random_device()())
 {
-	std::uniform_int_distribution<int> locations(0, 1);
+	//TODO(Ivan): Make random position based on obstacles
 
-	for (int i = 0; i < 25; ++i)
-	{
-		map.emplace_back(locations(rng));
-	}
 }
 
 void Game::Run()
@@ -24,6 +18,9 @@ void Game::Run()
 			PrintCharacterSelectionMenu();
 			pAttr = ConstructPlayerAttributes(PlayerCharacter);
 			player = Player(pAttr);
+			player.posX = 2;
+			player.posY = 1;
+			map.SetMapMarker(player);
 		}
 		
 		PrintGameMenu(player);
@@ -101,11 +98,16 @@ void Game::ViewCharacterStats(const Player& player)
 void Game::PrintGameMenu(Player& player)
 {
 	unsigned char choice;
-	std::cout << "VIEW STATS(C)--TRAVEL(W)--MAP(M)--QUIT(Q)" << std::endl;
+	std::cout << "VIEW STATS(C)--TRAVEL(W)--MAP(M)--CLEAR SCREEN(C)--QUIT(Q)" << std::endl;
 	std::cin >> choice;
+
 	if (choice == 'Q' || choice == 'q')
 	{
 		IsGameRunning = false;
+	}
+	else if (choice == 'C' || choice == 'c')
+	{
+		system("CLS");
 	}
 	else if (choice == 'W' || choice == 'w')
 	{
@@ -115,52 +117,50 @@ void Game::PrintGameMenu(Player& player)
 		std::cin >> in;
 		if (in == 'A' || in == 'a')
 		{
-			//Move by the map
-			if (player.posX < 1 || player.posX > 4 || player.posY < 1 || player.posY > 4)
+			player.posX -= 1;
+			if (map.isMoveValid(player))
 			{
-				std::cout << "There is huge rocky mountain in front of you. You can't pass further." << std::endl;
-			}
-			else
-			{
-				player.posX -= 1;
-				player.posY -= 0;
-			}
-		}
-		else if (in == 'W' || in == 'w')
-		{
-			if (player.posX < 1 || player.posX > 4 || player.posY < 1 || player.posY > 4)
-			{
-				std::cout << "There is huge rocky mountain in front of you. You can't pass further." << std::endl;
-			}
-			else
-			{
-				player.posX -= 0;
-				player.posY -= 1;
-			}
-
-		}
-		else if (in == 'D' || in == 'd')
-		{
-			if (player.posX < 1 || player.posX > 4 || player.posY < 1 || player.posY > 4)
-			{
-				std::cout << "There is huge rocky mountain in front of you. You can't pass further." << std::endl;
+				map.SetMapMarker(player);
 			}
 			else
 			{
 				player.posX += 1;
-				player.posY += 0;
+			}
+		}
+		else if (in == 'W' || in == 'w')
+		{
+			player.posY -= 1;
+			if (map.isMoveValid(player))
+			{
+				map.SetMapMarker(player);
+			}
+			else
+			{
+				player.posX += 1;
+			}
+		}
+		else if (in == 'D' || in == 'd')
+		{
+			player.posX += 1;
+			if (map.isMoveValid(player))
+			{
+				map.SetMapMarker(player);
+			}
+			else
+			{
+				player.posX -= 1;
 			}
 		}
 		else if (in == 'S' || in == 's')
 		{
-			if (player.posX < 1 || player.posX > 4 || player.posY < 1 || player.posY > 4)
+			player.posY += 1;
+			if (map.isMoveValid(player))
 			{
-				std::cout << "There is huge rocky mountain in front of you. You can't pass further." << std::endl;
+				map.SetMapMarker(player);
 			}
 			else
 			{
-				player.posX += 0;
-				player.posY += 1;
+				player.posX -= 1;
 			}
 		}
 		else
@@ -174,39 +174,7 @@ void Game::PrintGameMenu(Player& player)
 	}
 	else if (choice == 'M' || choice == 'm')
 	{
-		//View map
-		//std::mt19937 rng
-		//rng(std::random_device()())
-		//std::uniform_int_distribution<int> xDist(0, 3)
-
-
-		map[player.posY * 5 + player.posX] = 3;
-
-		//Printing what's in the map
-		for (int y = 0; y < 5; ++y)
-		{
-			for (int x = 0; x < 5; ++x)
-			{
-				if (map[y * 5 + x] == 0)
-				{
-					//Not visited
-					std::cout << "X";
-				}
-				else if (map[y * 5 + x] == 1)
-				{
-					//Can't go there
-					std::cout << "*";
-				}
-				else if (map[y * 5 + x] == 3)
-				{
-					//Can't go there
-					std::cout << "V";
-				}
-				//For debug purposes
-				//std::cout << map[y * 5 + x];
-			}
-			std::cout << std::endl;
-		}
+		map.PrintMap();
 	}
 	else
 	{

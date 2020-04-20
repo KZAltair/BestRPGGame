@@ -2,8 +2,8 @@
 //all main includes here
 #include <iostream>
 #include <vector>
-#include <random>
 #include "Player.h"
+#include "TileMap.h"
 
 
 class Game
@@ -24,6 +24,5 @@ private:
 	unsigned short PlayerCharacter = 0;
 	Player player;
 	player_attributes pAttr;
-	std::vector<int> map;
-	std::mt19937 rng;
+	TileMap map;
 };
