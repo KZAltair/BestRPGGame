@@ -98,7 +98,7 @@ void Player::LevelUp()
 		{
 			pAttributes->strength += 1;
 			pAttributes->ArmorClass += 4;
-			pAttributes->health += 10;
+			pAttributes->health += 5;
 			levelUpDone = true;
 		}
 		else if (in == 2)
@@ -106,14 +106,14 @@ void Player::LevelUp()
 			pAttributes->intelligence += 1;
 			pAttributes->MagicResistance += 5;
 			pAttributes->mana += 5;
-			pAttributes->health += 10;
+			pAttributes->health += 5;
 			levelUpDone = true;
 		}
 		else if (in == 3)
 		{
 			pAttributes->agility += 1;
 			pAttributes->speed += 4;
-			pAttributes->health += 10;
+			pAttributes->health += 5;
 			levelUpDone = true;
 		}
 		else if (in == 4)

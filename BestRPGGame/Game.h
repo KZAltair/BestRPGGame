@@ -31,11 +31,13 @@ private:
 	void PrintCharacterSelectionMenu();
 	void ViewCharacterStats(const Player& player);
 	void PrintGameMenu(Player& player);
+	void ResetGame();
 	player_attributes ConstructPlayerAttributes(unsigned int PlayerCharacter);
 	void Combat();
 
 private:
 	bool IsGameRunning = false;
+	bool isGameStarted = false;
 	bool CharacterIsSelected = false;
 	unsigned short PlayerCharacter = 0;
 	Player player;

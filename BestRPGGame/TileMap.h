@@ -7,6 +7,7 @@ class TileMap
 public:
 	TileMap();
 	void PrintMap();
+	void InitMap();
 	bool isMoveValid(const Player& p);
 	bool IsCombat() const;
 	void SetMapMarker(const Player& p);

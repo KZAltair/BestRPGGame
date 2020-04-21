@@ -15,25 +15,29 @@ void Game::Run()
 
 	while (IsGameRunning)
 	{
-		if (!CharacterIsSelected)
+		if (isGameStarted)
 		{
-			PrintCharacterSelectionMenu();
-			pAttr = ConstructPlayerAttributes(PlayerCharacter);
-			player = Player(pAttr);
-			player.posX = 2;
-			player.posY = 1;
-			map.SetMapMarker(player);
-		}
+			if (!CharacterIsSelected)
+			{
+				PrintCharacterSelectionMenu();
+				ResetGame();
+			}
 
-		if (!player.IsAlive())
-		{
-			PrintGameOver();
-			IsGameRunning = false;
+			if (!player.IsAlive())
+			{
+				PrintGameOver();
+				//IsGameRunning = false;
+			}
+			else
+			{
+				PrintGameMenu(player);
+			}
 		}
 		else
 		{
-			PrintGameMenu(player);
+			PrintMenu();
 		}
+		
 	}
 }
 
@@ -43,12 +47,16 @@ void Game::PrintGameOver()
 	std::cout << "**************************" << std::endl;
 	std::cout << "**       GAME OVER      **" << std::endl;
 	std::cout << "**************************" << std::endl;
+	CharacterIsSelected = false;
+	isGameStarted = false;
 	system("pause");
+	system("CLS");
 
 }
 
 void Game::PrintMenu()
 {
+	system("CLS");
 	unsigned short input = 0;
 	std::cout << "**************************" << std::endl;
 	std::cout << "**    BEST RPG GAME     **" << std::endl;
@@ -61,6 +69,7 @@ void Game::PrintMenu()
 	if (input == 1)
 	{
 		IsGameRunning = true;
+		isGameStarted = true;
 	}
 	else if (input == 2)
 	{
@@ -237,6 +246,16 @@ void Game::PrintGameMenu(Player& player)
 	{
 
 	}
+}
+
+void Game::ResetGame()
+{
+	map.InitMap();
+	pAttr = ConstructPlayerAttributes(PlayerCharacter);
+	player = Player(pAttr);
+	player.posX = 2;
+	player.posY = 1;
+	map.SetMapMarker(player);
 }
 
 player_attributes Game::ConstructPlayerAttributes(unsigned int PlayerCharacter)
