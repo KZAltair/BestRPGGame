@@ -19,7 +19,8 @@ void Player::TakeDamage(int damage)
 {
 	if (isAlive)
 	{
-		pAttributes->health -= damage;
+		pAttributes->health -= std::abs(damage);
+		statsCounter -= damage / 5;
 		std::cout << "You was hit by " << damage << " damage" << std::endl;
 		if (pAttributes->health < 0)
 		{
@@ -99,6 +100,7 @@ void Player::LevelUp()
 			pAttributes->strength += 1;
 			pAttributes->ArmorClass += 4;
 			pAttributes->health += 5;
+			statsCounter += 1;
 			levelUpDone = true;
 		}
 		else if (in == 2)
@@ -107,6 +109,7 @@ void Player::LevelUp()
 			pAttributes->MagicResistance += 5;
 			pAttributes->mana += 5;
 			pAttributes->health += 5;
+			statsCounter += 1;
 			levelUpDone = true;
 		}
 		else if (in == 3)
@@ -114,16 +117,19 @@ void Player::LevelUp()
 			pAttributes->agility += 1;
 			pAttributes->speed += 4;
 			pAttributes->health += 5;
+			statsCounter += 1;
 			levelUpDone = true;
 		}
 		else if (in == 4)
 		{
 			pAttributes->health += 20;
+			statsCounter += 4;
 			levelUpDone = true;
 		}
 		else if (in == 5)
 		{
 			pAttributes->mana += 20;
+			statsCounter += 4;
 			levelUpDone = true;
 		}
 		else
@@ -136,6 +142,23 @@ void Player::LevelUp()
 bool Player::IsAlive() const
 {
 	return isAlive;
+}
+
+void Player::DisplayStatsBar()
+{
+	std::cout << std::endl;
+	for (int i = 0; i < statsCounter; ++i)
+	{
+		std::cout << "*";
+	}
+	std::cout << std::endl;
+	std::cout << "**   HEALTH " << pAttributes->health << "   **" << std::endl;
+	for (int i = 0; i < statsCounter; ++i)
+	{
+		std::cout << "*";
+	}
+	std::cout << std::endl;
+	std::cout << std::endl;
 }
 
 

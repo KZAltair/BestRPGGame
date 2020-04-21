@@ -89,6 +89,7 @@ void TileMap::InitMap()
 bool TileMap::isMoveValid(const Player& p)
 {
 	combat = false;
+	system("CLS");
 	if (map[p.posY][p.posX] == 4)
 	{
 		std::cout << "You faced with huge rocky mountains that can't be walked around." << std::endl;

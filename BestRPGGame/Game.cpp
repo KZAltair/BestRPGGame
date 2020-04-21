@@ -128,7 +128,9 @@ void Game::ViewCharacterStats(const Player& player)
 void Game::PrintGameMenu(Player& player)
 {
 	unsigned char choice;
-	std::cout << "VIEW STATS(K)--TRAVEL(W)--MAP(M)--CLEAR SCREEN(C)--QUIT(Q)" << std::endl;
+	player.DisplayStatsBar();
+	map.PrintMap();
+	std::cout << "VIEW STATS(K)--TRAVEL(W)--CLEAR SCREEN(C)--QUIT(Q)" << std::endl;
 	std::cin >> choice;
 
 	if (choice == 'Q' || choice == 'q')
@@ -154,6 +156,7 @@ void Game::PrintGameMenu(Player& player)
 				if (map.IsCombat())
 				{
 					Combat();
+					Loot();
 					map.SetMapMarker(player);
 				}
 				else
@@ -175,6 +178,7 @@ void Game::PrintGameMenu(Player& player)
 				if (map.IsCombat())
 				{
 					Combat();
+					Loot();
 					map.SetMapMarker(player);
 				}
 				else
@@ -196,6 +200,7 @@ void Game::PrintGameMenu(Player& player)
 				if (map.IsCombat())
 				{
 					Combat();
+					Loot();
 					map.SetMapMarker(player);
 				}
 				else
@@ -217,6 +222,7 @@ void Game::PrintGameMenu(Player& player)
 				if (map.IsCombat())
 				{
 					Combat();
+					Loot();
 					map.SetMapMarker(player);
 				}
 				else
@@ -238,13 +244,9 @@ void Game::PrintGameMenu(Player& player)
 	{
 		ViewCharacterStats(player);
 	}
-	else if (choice == 'M' || choice == 'm')
-	{
-		map.PrintMap();
-	}
 	else
 	{
-
+		std::cout << "Enter a valid command from main menu." << std::endl;
 	}
 }
 
@@ -256,6 +258,29 @@ void Game::ResetGame()
 	player.posX = 2;
 	player.posY = 1;
 	map.SetMapMarker(player);
+}
+
+void Game::Loot()
+{
+	if (Looting)
+	{
+		char in;
+		std::cout << "--LOOT(L)----TRAVEL(T)--" << std::endl;
+		std::cin >> in;
+		if (in == 'L' || in == 'l')
+		{
+			std::cout << "You found nothing, but flesh and bones." << std::endl;
+		}
+		else if (in == 'T' || in == 't')
+		{
+			Looting = false;
+		}
+		else
+		{
+			std::cout << "Invalid command. Try T or L letters." << std::endl;
+		}
+	}
+	
 }
 
 player_attributes Game::ConstructPlayerAttributes(unsigned int PlayerCharacter)
@@ -336,9 +361,11 @@ void Game::Combat()
 		int diceNumber = GenerateRandomNumber(1, 6);
 		char in = 0;
 		std::cout << "**************************************************" << std::endl;
+		std::cout << "              ";
 		std::cout << map.GetEnemy(player)->GetAttributes()->name << " "
 			<< map.GetEnemy(player)->GetAttributes()->health << std::endl;
 		std::cout << "**************************************************" << std::endl;
+		player.DisplayStatsBar();
 		std::cout << "Attack(A)--Move(W)--Run(D)--SPEAK(S)" << std::endl;
 		std::cin >> in;
 		if (in == 'A' || in == 'a')
@@ -388,5 +415,6 @@ void Game::Combat()
 	if (player.IsAlive())
 	{
 		player.AddExperience(*map.GetEnemy(player));
+		Looting = true;
 	}
 }

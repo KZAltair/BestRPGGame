@@ -22,12 +22,28 @@ int Enemy::Attack(int armorClass, int magicResistance)
 
 	if (attackType == 0)
 	{
-		damage = ((eAttributes.agility + eAttributes.strength) * diceNumber) - armorClass;
+		if ((((eAttributes.agility + eAttributes.strength) * diceNumber) - armorClass) <= 0)
+		{
+			damage = 0;
+		}
+		else
+		{
+			damage = ((eAttributes.agility + eAttributes.strength) * diceNumber) - armorClass;
+		}
+		
 		std::cout << "Regular attack by " << damage << std::endl;
 	}
 	else if (attackType == 1 && eAttributes.mana > eAttributes.manaSpellCost)
 	{
-		damage = ((eAttributes.intelligence + eAttributes.speed) * diceNumber) - magicResistance;
+		if ((((eAttributes.intelligence + eAttributes.speed) * diceNumber) - magicResistance) <= 0)
+		{
+			damage = 0;
+		}
+		else
+		{
+			damage = ((eAttributes.intelligence + eAttributes.speed) * diceNumber) - magicResistance;
+		}
+		
 		if (eAttributes.mana > 0)
 		{
 			eAttributes.mana -= eAttributes.manaSpellCost;
@@ -63,9 +79,9 @@ void Enemy::GenerateAttributes()
 		eAttributes.agility = 5;
 		eAttributes.health = 70;
 		eAttributes.intelligence = 5;
-		eAttributes.mana = 50;
+		eAttributes.mana = 40;
 		eAttributes.manaSpellCost = 20;
-		eAttributes.speed = 15;
+		eAttributes.speed = 10;
 		eAttributes.strength = 6;
 		eAttributes.armorClass = 10;
 		eAttributes.magicResistance = 20;

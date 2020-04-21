@@ -30,6 +30,7 @@ public:
 	void AddExperience(class Enemy& e);
 	void LevelUp();
 	bool IsAlive() const;
+	void DisplayStatsBar();
 private:
 	player_attributes* pAttributes;
 	bool isAlive = false;
@@ -37,4 +38,5 @@ public:
 	int posX = 0;
 	int posY = 0;
 	bool levelUpDone = false;
+	int statsCounter = 20;
 };
