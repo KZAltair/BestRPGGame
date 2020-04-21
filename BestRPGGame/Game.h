@@ -41,6 +41,7 @@ private:
 	bool isGameStarted = false;
 	bool Looting = false;
 	bool viewStats = false;
+	bool viewMainMenu = true;
 	bool CharacterIsSelected = false;
 	unsigned short PlayerCharacter = 0;
 	Player player;

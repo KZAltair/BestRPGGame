@@ -39,7 +39,15 @@ int Player::Attack(int armorClass, int magicResistance, int attacktype)
 
 	if (attacktype == 0)
 	{
-		damage = ((pAttributes->agility + pAttributes->strength) * diceNumber) - armorClass;
+		if ((((pAttributes->agility + pAttributes->strength) * diceNumber) - armorClass) < 0)
+		{
+			damage = 0;
+		}
+		else
+		{
+			damage = ((pAttributes->agility + pAttributes->strength) * diceNumber) - armorClass;
+		}
+
 	}
 	else if (attacktype == 1)
 	{
@@ -49,7 +57,15 @@ int Player::Attack(int armorClass, int magicResistance, int attacktype)
 		}
 		else
 		{
-			damage = ((pAttributes->intelligence + pAttributes->speed) * diceNumber) - magicResistance;
+			if ((((pAttributes->intelligence + pAttributes->speed) * diceNumber) - magicResistance) < 0)
+			{
+				damage = 0;
+			}
+			else
+			{
+				damage = ((pAttributes->intelligence + pAttributes->speed) * diceNumber) - magicResistance;
+			}
+			
 			if (pAttributes->mana > 0)
 			{
 				pAttributes->mana -= pAttributes->manaSpellCost;

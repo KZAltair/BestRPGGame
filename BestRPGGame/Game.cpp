@@ -10,7 +10,6 @@ Game::Game()
 
 void Game::Run()
 {
-	
 	PrintMenu();
 
 	while (IsGameRunning)
@@ -35,6 +34,7 @@ void Game::Run()
 		}
 		else
 		{
+
 			PrintMenu();
 		}
 		
@@ -51,30 +51,43 @@ void Game::PrintGameOver()
 	isGameStarted = false;
 	system("pause");
 	system("CLS");
+	viewMainMenu = true;
 
 }
 
 void Game::PrintMenu()
 {
-	system("CLS");
-	unsigned short input = 0;
-	std::cout << "**************************" << std::endl;
-	std::cout << "**    BEST RPG GAME     **" << std::endl;
-	std::cout << "**************************" << std::endl;
-	std::cout << std::endl;
-	std::cout << "1. START NEW GAME" << std::endl;
-	std::cout << "2. EXIT GAME" << std::endl;
-	std::cin >> input;
+	//TODO(ivan): Infinite loop bug in case of using letters in choice input
+		system("CLS");
+		unsigned short input = 0;
+		std::cout << "**************************" << std::endl;
+		std::cout << "**    BEST RPG GAME     **" << std::endl;
+		std::cout << "**************************" << std::endl;
+		std::cout << std::endl;
+		std::cout << "1. START NEW GAME" << std::endl;
+		std::cout << "2. EXIT GAME" << std::endl;
+		std::cin >> input;
 
-	if (input == 1)
-	{
-		IsGameRunning = true;
-		isGameStarted = true;
-	}
-	else if (input == 2)
-	{
-		IsGameRunning = false;
-	}
+		if (typeid(input) != typeid(int))
+		{
+			std::cout << "Use number 1 or 2 to select" << std::endl;
+		}
+
+		if (input == 1)
+		{
+			IsGameRunning = true;
+			isGameStarted = true;
+			viewMainMenu = false;
+		}
+		else if (input == 2)
+		{
+			IsGameRunning = false;
+			viewMainMenu = false;
+		}
+		else
+		{
+			std::cout << "Enter a valid choice 1 or 2" << std::endl;
+		}
 }
 
 void Game::PrintCharacterSelectionMenu()
