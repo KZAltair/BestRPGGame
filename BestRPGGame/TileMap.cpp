@@ -77,7 +77,7 @@ void TileMap::InitMap()
 	}
 
 	//Generate enemies
-	for (int i = 0; i < 5; ++i)
+	for (int i = 0; i < numEnemiesOnMap; ++i)
 	{
 		pos.x = GenerateRandomNumber(1, cols - 2);
 		pos.y = GenerateRandomNumber(1, rows - 2);
@@ -136,4 +136,21 @@ Enemy* TileMap::GetEnemy(const Player& p)
 		}
 	}
 	return &enemy[rightEnemyIndex];
+}
+
+bool TileMap::isAllEnemiesAlive() const
+{
+	int count = 0;
+	for (int i = 0; i < numEnemiesOnMap; ++i)
+	{
+		if (enemy[i].IsAlive())
+		{
+			count++;
+		}
+	}
+	if (count <= 0)
+	{
+		return false;
+	}
+	return true;
 }

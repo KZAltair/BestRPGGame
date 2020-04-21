@@ -12,6 +12,7 @@ public:
 	bool IsCombat() const;
 	void SetMapMarker(const Player& p);
 	Enemy* GetEnemy(const Player& p);
+	bool isAllEnemiesAlive() const;
 private:
 	static constexpr int rows = 10;
 	static constexpr int cols = 10;
@@ -20,4 +21,5 @@ private:
 	Enemy enemy[5];
 	enemy_pos pos;
 	bool combat = false;
+	int numEnemiesOnMap = 5;
 };

@@ -23,7 +23,7 @@ void Game::Run()
 				ResetGame();
 			}
 
-			if (!player.IsAlive())
+			if (!player.IsAlive() || !map.isAllEnemiesAlive())
 			{
 				PrintGameOver();
 				//IsGameRunning = false;
@@ -127,6 +127,7 @@ void Game::ViewCharacterStats(const Player& player)
 
 void Game::PrintGameMenu(Player& player)
 {
+	system("CLS");
 	unsigned char choice;
 	player.DisplayStatsBar();
 	map.PrintMap();
@@ -262,7 +263,7 @@ void Game::ResetGame()
 
 void Game::Loot()
 {
-	if (Looting)
+	while (Looting)
 	{
 		char in;
 		std::cout << "--LOOT(L)----TRAVEL(T)--" << std::endl;
