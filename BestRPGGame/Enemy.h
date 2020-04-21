@@ -13,6 +13,8 @@ struct enemy_attributes
 	int manaSpellCost;
 	int armorClass;
 	int magicResistance;
+	int exp;
+	int levelModifier;
 };
 
 struct enemy_pos

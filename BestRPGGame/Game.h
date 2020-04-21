@@ -5,6 +5,20 @@
 #include "Player.h"
 #include "TileMap.h"
 
+/*
+1. Make levels
+2. Improved Combat system
+3. Load/Save game
+4. Vizual quality with frames and health indicators
+5. Dialog system
+6. AI
+7. Sound
+8. Better menu system
+9. Inventory
+10. Restoring stats / rest
+11. Map and diversity
+12. Leveling up / Implemented, but poorly
+*/
 
 class Game
 {

@@ -106,6 +106,8 @@ void Game::ViewCharacterStats(const Player& player)
 	std::cout << "**************************" << std::endl;
 	std::cout << "**      " << pAttr.className << "      **" << std::endl;
 	std::cout << "**************************" << std::endl;
+	std::cout << "LEVEL: " << pAttr.Level << std::endl;
+	std::cout << "EXPERIENCE: " << pAttr.curExp << std::endl;
 	std::cout << "HEALTH: " << pAttr.health << std::endl;
 	std::cout << "MANA: " << pAttr.mana << std::endl;
 	std::cout << "STRENGTH: " << pAttr.strength << std::endl;
@@ -254,6 +256,10 @@ player_attributes Game::ConstructPlayerAttributes(unsigned int PlayerCharacter)
 		pAttr.manaSpellCost = 50;
 		pAttr.ArmorClass = 30;
 		pAttr.MagicResistance = 20;
+		pAttr.curExp = 0;
+		pAttr.expModifier = 2;
+		pAttr.expForNextLevel = pAttr.curExp * pAttr.expModifier + 500;
+		pAttr.Level = 1;
 
 		return pAttr;
 	}break;
@@ -269,6 +275,10 @@ player_attributes Game::ConstructPlayerAttributes(unsigned int PlayerCharacter)
 		pAttr.manaSpellCost = 30;
 		pAttr.ArmorClass = 15;
 		pAttr.MagicResistance = 40;
+		pAttr.curExp = 0;
+		pAttr.expModifier = 2;
+		pAttr.expForNextLevel = pAttr.curExp * pAttr.expModifier + 500;
+		pAttr.Level = 1;
 
 		return pAttr;
 
@@ -285,6 +295,10 @@ player_attributes Game::ConstructPlayerAttributes(unsigned int PlayerCharacter)
 		pAttr.manaSpellCost = 40;
 		pAttr.ArmorClass = 20;
 		pAttr.MagicResistance = 10;
+		pAttr.curExp = 0;
+		pAttr.expModifier = 2;
+		pAttr.expForNextLevel = pAttr.curExp * pAttr.expModifier + 500;
+		pAttr.Level = 1;
 
 		return pAttr;
 
@@ -351,5 +365,9 @@ void Game::Combat()
 		{
 			std::cout << "Enter a valid command!" << std::endl;
 		}
+	}
+	if (player.IsAlive())
+	{
+		player.AddExperience(*map.GetEnemy(player));
 	}
 }

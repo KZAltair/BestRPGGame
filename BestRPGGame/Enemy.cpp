@@ -53,6 +53,8 @@ void Enemy::GenerateAttributes()
 		eAttributes.strength = 2;
 		eAttributes.armorClass = 10;
 		eAttributes.magicResistance = 10;
+		eAttributes.levelModifier = 2;
+		eAttributes.exp = 250 * eAttributes.levelModifier;
 		isAlive = true;
 	}
 	else if (enemytype == 1)
@@ -67,6 +69,8 @@ void Enemy::GenerateAttributes()
 		eAttributes.strength = 6;
 		eAttributes.armorClass = 10;
 		eAttributes.magicResistance = 20;
+		eAttributes.levelModifier = 3;
+		eAttributes.exp = 50 * eAttributes.levelModifier;
 		isAlive = true;
 	}
 }
