@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 
 struct player_attributes
 {
@@ -31,12 +32,21 @@ public:
 	void LevelUp();
 	bool IsAlive() const;
 	void DisplayStatsBar();
+	void DisplayInventory();
+private:
+	void InitInventory();
 private:
 	player_attributes* pAttributes;
 	bool isAlive = false;
 public:
 	int posX = 0;
 	int posY = 0;
+	bool viewInventory = false;
+private:
 	bool levelUpDone = false;
 	int statsCounter = 20;
+	static constexpr int invSizeX = 10;
+	static constexpr int invSizeY = 10;
+	int inventory[invSizeX][invSizeY];
+
 };

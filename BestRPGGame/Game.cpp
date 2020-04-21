@@ -111,18 +111,36 @@ void Game::PrintCharacterSelectionMenu()
 
 void Game::ViewCharacterStats(const Player& player)
 {
-	player_attributes pAttr = *player.GetPlayerAttributes();
-	std::cout << "**************************" << std::endl;
-	std::cout << "**      " << pAttr.className << "      **" << std::endl;
-	std::cout << "**************************" << std::endl;
-	std::cout << "LEVEL: " << pAttr.Level << std::endl;
-	std::cout << "EXPERIENCE: " << pAttr.curExp << std::endl;
-	std::cout << "HEALTH: " << pAttr.health << std::endl;
-	std::cout << "MANA: " << pAttr.mana << std::endl;
-	std::cout << "STRENGTH: " << pAttr.strength << std::endl;
-	std::cout << "AGILITY: " << pAttr.agility << std::endl;
-	std::cout << "INTELLIGENCE: " << pAttr.intelligence << std::endl;
-	std::cout << "SPEED: " << pAttr.speed << std::endl;
+	while (viewStats)
+	{
+		system("CLS");
+		player_attributes pAttr = *player.GetPlayerAttributes();
+		std::cout << "**************************" << std::endl;
+		std::cout << "**      " << pAttr.className << "      **" << std::endl;
+		std::cout << "**************************" << std::endl;
+		std::cout << "LEVEL: " << pAttr.Level << std::endl;
+		std::cout << "EXPERIENCE: " << pAttr.curExp << std::endl;
+		std::cout << "HEALTH: " << pAttr.health << std::endl;
+		std::cout << "MANA: " << pAttr.mana << std::endl;
+		std::cout << "STRENGTH: " << pAttr.strength << std::endl;
+		std::cout << "AGILITY: " << pAttr.agility << std::endl;
+		std::cout << "INTELLIGENCE: " << pAttr.intelligence << std::endl;
+		std::cout << "SPEED: " << pAttr.speed << std::endl;
+
+		std::cout << std::endl;
+		std::cout << "Close(X)";
+		char in;
+		std::cin >> in;
+		if (in == 'X' || in == 'x')
+		{
+			viewStats = false;
+		}
+		else
+		{
+			system("CLS");
+		}
+
+	}
 }
 
 void Game::PrintGameMenu(Player& player)
@@ -131,7 +149,7 @@ void Game::PrintGameMenu(Player& player)
 	unsigned char choice;
 	player.DisplayStatsBar();
 	map.PrintMap();
-	std::cout << "VIEW STATS(K)--TRAVEL(W)--CLEAR SCREEN(C)--QUIT(Q)" << std::endl;
+	std::cout << "VIEW STATS(K)--INVENTORY(I)--TRAVEL(W)--CLEAR SCREEN(C)--QUIT(Q)" << std::endl;
 	std::cin >> choice;
 
 	if (choice == 'Q' || choice == 'q')
@@ -163,6 +181,11 @@ void Game::PrintGameMenu(Player& player)
 				else
 				{
 					map.SetMapMarker(player);
+					if (player.GetPlayerAttributes()->health < 100)
+					{
+						player.GetPlayerAttributes()->health += 1;
+					}
+					
 				}
 			}
 			else
@@ -185,6 +208,10 @@ void Game::PrintGameMenu(Player& player)
 				else
 				{
 					map.SetMapMarker(player);
+					if (player.GetPlayerAttributes()->health < 100)
+					{
+						player.GetPlayerAttributes()->health += 1;
+					}
 				}
 			}
 			else
@@ -207,6 +234,10 @@ void Game::PrintGameMenu(Player& player)
 				else
 				{
 					map.SetMapMarker(player);
+					if (player.GetPlayerAttributes()->health < 100)
+					{
+						player.GetPlayerAttributes()->health += 1;
+					}
 				}
 			}
 			else
@@ -229,6 +260,10 @@ void Game::PrintGameMenu(Player& player)
 				else
 				{
 					map.SetMapMarker(player);
+					if (player.GetPlayerAttributes()->health < 100)
+					{
+						player.GetPlayerAttributes()->health += 1;
+					}
 				}
 			}
 			else
@@ -241,9 +276,16 @@ void Game::PrintGameMenu(Player& player)
 			std::cout << "Enter a valid command..." << std::endl;
 		}
 	}
+	else if (choice == 'I' || choice == 'i')
+	{
+		player.viewInventory = true;
+		player.DisplayInventory();
+	}
 	else if (choice == 'K' || choice == 'k')
 	{
+		viewStats = true;
 		ViewCharacterStats(player);
+
 	}
 	else
 	{
@@ -317,7 +359,7 @@ player_attributes Game::ConstructPlayerAttributes(unsigned int PlayerCharacter)
 		pAttr.mana = 100;
 		pAttr.speed = 10;
 		pAttr.strength = 5;
-		pAttr.manaSpellCost = 30;
+		pAttr.manaSpellCost = 20;
 		pAttr.ArmorClass = 15;
 		pAttr.MagicResistance = 40;
 		pAttr.curExp = 0;

@@ -15,11 +15,12 @@ public:
 	bool isAllEnemiesAlive() const;
 private:
 	static constexpr int rows = 10;
-	static constexpr int cols = 10;
+	static constexpr int cols = 20;
 
 	int map[rows][cols];
-	Enemy enemy[5];
+	static constexpr int numEnemiesOnMap = 10;
+	Enemy enemy[numEnemiesOnMap];
 	enemy_pos pos;
 	bool combat = false;
-	int numEnemiesOnMap = 5;
+	
 };

@@ -8,6 +8,7 @@ Player::Player(player_attributes& attributes)
 	pAttributes(&attributes),
 	isAlive(true)
 {
+	InitInventory();
 }
 
 player_attributes* Player::GetPlayerAttributes() const
@@ -159,6 +160,80 @@ void Player::DisplayStatsBar()
 	}
 	std::cout << std::endl;
 	std::cout << std::endl;
+}
+
+void Player::InitInventory()
+{
+	for (int y = 0; y < invSizeY; ++y)
+	{
+		for (int x = 0; x < invSizeX; ++x)
+		{
+			inventory[y][x] = 0;
+		}
+	}
+	for (int y = 1; y < invSizeY - 1; ++y)
+	{
+		for (int x = 1; x < invSizeX - 1; ++x)
+		{
+			inventory[y][x] = 1;
+		}
+	}
+	for (int y = 1; y < 2; ++y)
+	{
+		for (int x = 1; x < 3; ++x)
+		{
+			int item = GenerateRandomNumber(2, 3);
+			inventory[y][x] = item;
+		}
+	}
+	viewInventory = false;
+}
+
+void Player::DisplayInventory()
+{
+	while (viewInventory)
+	{
+		system("CLS");
+		std::cout << "**************************" << std::endl;
+		std::cout << "**      " << pAttributes->className << "      **" << std::endl;
+		std::cout << "**************************" << std::endl;
+		for (int y = 0; y < invSizeY; ++y)
+		{
+			for (int x = 0; x < invSizeX; ++x)
+			{
+				if (inventory[y][x] == 0)
+				{
+					std::cout << "-";
+				}
+				else if (inventory[y][x] == 1)
+				{
+					std::cout << " ";
+				}
+				else if (inventory[y][x] == 2)
+				{
+					std::cout << "M";
+				}
+				else if (inventory[y][x] == 3)
+				{
+					std::cout << "H";
+				}
+			}
+			std::cout << std::endl;
+		}
+		std::cout << std::endl;
+		std::cout << "Close(X)";
+		char in;
+		std::cin >> in;
+		if (in == 'X' || in == 'x')
+		{
+			viewInventory = false;
+		}
+		else
+		{
+			system("CLS");
+		}
+	}
+	
 }
 
 

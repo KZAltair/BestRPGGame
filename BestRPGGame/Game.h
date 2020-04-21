@@ -13,9 +13,9 @@
 5. Dialog system
 6. AI
 7. Sound
-8. Better menu system
+8. Better menu system / possibly better graphics
 9. Inventory
-10. Restoring stats / rest
+10. Restoring stats / rest - done. Rest later.
 11. Map and diversity
 12. Leveling up / Implemented, but poorly
 */
@@ -40,6 +40,7 @@ private:
 	bool IsGameRunning = false;
 	bool isGameStarted = false;
 	bool Looting = false;
+	bool viewStats = false;
 	bool CharacterIsSelected = false;
 	unsigned short PlayerCharacter = 0;
 	Player player;
