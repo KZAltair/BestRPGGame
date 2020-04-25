@@ -18,6 +18,12 @@
 10. Restoring stats / rest - done. Rest later.
 11. Map and diversity
 12. Leveling up / Implemented, but poorly
+
+Bugs
+1. Game is not ending once all enemies are dead
+2. After level up each new kill is a level up
+3. Player can still move on invalid X location
+4. Some enemies after 2 kills dies automatically
 */
 
 class Game
