@@ -33,6 +33,7 @@ public:
 	bool IsAlive() const;
 	void DisplayStatsBar();
 	void DisplayInventory();
+	void UseItem(char in);
 private:
 	void InitInventory();
 private:

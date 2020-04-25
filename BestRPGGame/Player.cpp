@@ -246,10 +246,47 @@ void Player::DisplayInventory()
 		}
 		else
 		{
+			UseItem(in);
 			system("CLS");
 		}
 	}
 	
+}
+
+void Player::UseItem(char in)
+{
+	for (int y = 0; y < invSizeY; ++y)
+	{
+		for (int x = 0; x < invSizeX; ++x)
+		{
+			if (in == 'M' || in == 'm')
+			{
+				if (inventory[y][x] == 2)
+				{
+					pAttributes->mana += std::min(50, 100 - pAttributes->mana);
+					statsCounter += std::min(50, 100 - pAttributes->mana) / 5;
+					inventory[y][x] = 1;
+					std::cout << "Used health potion" << std::endl;
+					break;
+				}
+			}
+			else if (in == 'H' || in == 'h')
+			{
+				if (inventory[y][x] == 3)
+				{
+					pAttributes->health += std::min(50, 100 - pAttributes->health);
+					statsCounter += std::min(50, 100 - pAttributes->health) / 5;
+					inventory[y][x] = 1;
+					std::cout << "Used mana potion" << std::endl;
+					break;
+				}
+			}
+			else
+			{
+				std::cout << "No item found" << std::endl;
+			}
+		}
+	}
 }
 
 

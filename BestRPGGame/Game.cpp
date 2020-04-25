@@ -422,7 +422,7 @@ void Game::Combat()
 			<< map.GetEnemy(player)->GetAttributes()->health << std::endl;
 		std::cout << "**************************************************" << std::endl;
 		player.DisplayStatsBar();
-		std::cout << "Attack(A)--Move(W)--Run(D)--SPEAK(S)" << std::endl;
+		std::cout << "Attack(A)--Move(W)--Run(D)--SPEAK(S)--Inventory(I)" << std::endl;
 		std::cin >> in;
 		if (in == 'A' || in == 'a')
 		{
@@ -462,6 +462,11 @@ void Game::Combat()
 		else if (in == 'S' || in == 's')
 		{
 			//Speak with enemy for fun outcomes
+		}
+		else if (in == 'I' || in == 'i')
+		{
+			player.viewInventory = true;
+			player.DisplayInventory();
 		}
 		else
 		{
