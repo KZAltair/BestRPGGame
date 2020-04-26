@@ -115,3 +115,8 @@ bool Enemy::IsAlive() const
 {
 	return isAlive;
 }
+
+int Enemy::GenerateLoot()
+{
+	return GenerateRandomNumber(1,3);
+}

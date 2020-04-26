@@ -21,7 +21,6 @@ void Player::TakeDamage(int damage)
 	if (isAlive)
 	{
 		pAttributes->health -= std::abs(damage);
-		statsCounter -= damage / 5;
 		std::cout << "You was hit by " << damage << " damage" << std::endl;
 		if (pAttributes->health < 0)
 		{
@@ -117,7 +116,6 @@ void Player::LevelUp()
 			pAttributes->strength += 1;
 			pAttributes->ArmorClass += 4;
 			pAttributes->health += 5;
-			statsCounter += 1;
 			levelUpDone = true;
 		}
 		else if (in == 2)
@@ -126,7 +124,6 @@ void Player::LevelUp()
 			pAttributes->MagicResistance += 5;
 			pAttributes->mana += 5;
 			pAttributes->health += 5;
-			statsCounter += 1;
 			levelUpDone = true;
 		}
 		else if (in == 3)
@@ -134,19 +131,16 @@ void Player::LevelUp()
 			pAttributes->agility += 1;
 			pAttributes->speed += 4;
 			pAttributes->health += 5;
-			statsCounter += 1;
 			levelUpDone = true;
 		}
 		else if (in == 4)
 		{
 			pAttributes->health += 20;
-			statsCounter += 4;
 			levelUpDone = true;
 		}
 		else if (in == 5)
 		{
 			pAttributes->mana += 20;
-			statsCounter += 4;
 			levelUpDone = true;
 		}
 		else
@@ -164,13 +158,13 @@ bool Player::IsAlive() const
 void Player::DisplayStatsBar()
 {
 	std::cout << std::endl;
-	for (int i = 0; i < statsCounter; ++i)
+	for (int i = 0; i < pAttributes->health/5; ++i)
 	{
 		std::cout << "*";
 	}
 	std::cout << std::endl;
 	std::cout << "**   HEALTH " << pAttributes->health << "   **" << std::endl;
-	for (int i = 0; i < statsCounter; ++i)
+	for (int i = 0; i < pAttributes->health / 5; ++i)
 	{
 		std::cout << "*";
 	}
@@ -264,7 +258,6 @@ void Player::UseItem(char in)
 				if (inventory[y][x] == 2)
 				{
 					pAttributes->mana += std::min(50, 100 - pAttributes->mana);
-					statsCounter += std::min(50, 100 - pAttributes->mana) / 5;
 					inventory[y][x] = 1;
 					std::cout << "Used health potion" << std::endl;
 					break;
@@ -275,7 +268,6 @@ void Player::UseItem(char in)
 				if (inventory[y][x] == 3)
 				{
 					pAttributes->health += std::min(50, 100 - pAttributes->health);
-					statsCounter += std::min(50, 100 - pAttributes->health) / 5;
 					inventory[y][x] = 1;
 					std::cout << "Used mana potion" << std::endl;
 					break;
@@ -287,6 +279,59 @@ void Player::UseItem(char in)
 			}
 		}
 	}
+}
+
+void Player::AddItem(int loot)
+{
+	int count = 0;
+	if (lootAdded)
+	{
+		std::cout << "Nothing else found." << std::endl;
+	}
+	else
+	{
+		if (loot != 1)
+		{
+			for (int y = 0; y < invSizeY; ++y)
+			{
+				for (int x = 0; x < invSizeX; ++x)
+				{
+					if (inventory[y][x] == 1)
+					{
+						inventory[y][x] = loot;
+						std::cout << "You found some valuable items." << std::endl;
+						lootAdded = true;
+						break;
+					}
+				}
+				if (lootAdded)
+				{
+					break;
+				}
+			}
+
+		}
+	}
+	for (int y = 0; y < invSizeY; ++y)
+	{
+		for (int x = 0; x < invSizeX; ++x)
+		{
+			if (inventory[y][x] == 1)
+			{
+				count++;
+			}
+		}
+	}
+	if (count == 0)
+	{
+		std::cout << "You can't carry anymore." << std::endl;
+	}
+
+}
+
+void Player::RestoreHealth()
+{
+	pAttributes->health += std::min(2, 100 - pAttributes->health);
 }
 
 

@@ -34,6 +34,7 @@ public:
 	enemy_pos GetEnemyPos() const;
 	void TakeDamage(int damage);
 	bool IsAlive() const;
+	int GenerateLoot();
 private:
 	enemy_attributes eAttributes;
 	enemy_pos pos;

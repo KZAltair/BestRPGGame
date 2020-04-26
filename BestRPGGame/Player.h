@@ -34,6 +34,8 @@ public:
 	void DisplayStatsBar();
 	void DisplayInventory();
 	void UseItem(char in);
+	void AddItem(int loot);
+	void RestoreHealth();
 private:
 	void InitInventory();
 private:
@@ -43,9 +45,9 @@ public:
 	int posX = 0;
 	int posY = 0;
 	bool viewInventory = false;
+	bool lootAdded = false;
 private:
 	bool levelUpDone = false;
-	int statsCounter = 20;
 	static constexpr int invSizeX = 10;
 	static constexpr int invSizeY = 10;
 	int inventory[invSizeX][invSizeY];

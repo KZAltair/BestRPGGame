@@ -162,6 +162,7 @@ void Game::PrintGameMenu(Player& player)
 	unsigned char choice;
 	player.DisplayStatsBar();
 	map.PrintMap();
+	player.lootAdded = false;
 	std::cout << "VIEW STATS(K)--INVENTORY(I)--TRAVEL(W)--CLEAR SCREEN(C)--QUIT(Q)" << std::endl;
 	std::cin >> choice;
 
@@ -194,10 +195,7 @@ void Game::PrintGameMenu(Player& player)
 				else
 				{
 					map.SetMapMarker(player);
-					if (player.GetPlayerAttributes()->health < 100)
-					{
-						player.GetPlayerAttributes()->health += 1;
-					}
+					player.RestoreHealth();
 					
 				}
 			}
@@ -221,10 +219,7 @@ void Game::PrintGameMenu(Player& player)
 				else
 				{
 					map.SetMapMarker(player);
-					if (player.GetPlayerAttributes()->health < 100)
-					{
-						player.GetPlayerAttributes()->health += 1;
-					}
+					player.RestoreHealth();
 				}
 			}
 			else
@@ -247,10 +242,7 @@ void Game::PrintGameMenu(Player& player)
 				else
 				{
 					map.SetMapMarker(player);
-					if (player.GetPlayerAttributes()->health < 100)
-					{
-						player.GetPlayerAttributes()->health += 1;
-					}
+					player.RestoreHealth();
 				}
 			}
 			else
@@ -273,10 +265,7 @@ void Game::PrintGameMenu(Player& player)
 				else
 				{
 					map.SetMapMarker(player);
-					if (player.GetPlayerAttributes()->health < 100)
-					{
-						player.GetPlayerAttributes()->health += 1;
-					}
+					player.RestoreHealth();
 				}
 			}
 			else
@@ -325,7 +314,7 @@ void Game::Loot()
 		std::cin >> in;
 		if (in == 'L' || in == 'l')
 		{
-			std::cout << "You found nothing, but flesh and bones." << std::endl;
+			player.AddItem(map.GetEnemy(player)->GenerateLoot());
 		}
 		else if (in == 'T' || in == 't')
 		{
